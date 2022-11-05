@@ -126,6 +126,19 @@ static enum ec_status keyboard_overdrive(struct host_cmd_handler_args *args)
 }
 DECLARE_HOST_COMMAND(EC_CMD_SET_KEYBOARD_OVERDRIVE, keyboard_overdrive, EC_VER_MASK(0));
 
+static void keyboard_overdrive_suspend(void) {
+	ko_suspend_kb();
+	ko_suspend_user();
+	//dustin consider pretending that we have an eeprom api
+}
+DECLARE_HOOK(HOOK_CHIPSET_SUSPEND, keyboard_overdrive_suspend, HOOK_PRIO_DEFAULT);
+
+static void keyboard_overdrive_resume(void) {
+	ko_resume_kb();
+	ko_resume_user();
+}
+DECLARE_HOOK(HOOK_CHIPSET_RESUME, keyboard_overdrive_resume, HOOK_PRIO_DEFAULT);
+
 void keyboard_overdrive_task(void* u) {
 	int wait = -1;
 	while(1) {

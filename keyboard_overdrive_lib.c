@@ -202,3 +202,8 @@ ternary_t matrix_callback_overload(int8_t row, int8_t col, int8_t pressed, uint1
 	return T_DROP_EVENT;
 }
 /// REGION END
+
+__attribute__((weak)) void ko_suspend_kb(void) { }
+__attribute__((weak)) void ko_suspend_user(void) { }
+__attribute__((weak)) void ko_resume_kb(void) { }
+__attribute__((weak)) void ko_resume_user(void) { }
