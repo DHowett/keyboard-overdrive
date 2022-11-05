@@ -91,19 +91,27 @@ bool layer_state_is(uint8_t layer) {
 }
 
 /// REGION: Record Processing
+__attribute__((weak)) bool process_record_proto(uint16_t keycode, keyrecord_t* record) { return true; }
 __attribute__((weak)) bool process_record_kb(uint16_t keycode, keyrecord_t* record) { return true; }
 __attribute__((weak)) bool process_record_user(uint16_t keycode, keyrecord_t* record) { return true; }
 
 bool process_record(uint16_t keycode, struct key_record* record) {
-
-	if (!process_record_kb(keycode, record)) {
-		return false;
-	}
-
+	// The user routine gets the highest precedence
 	if (!process_record_user(keycode, record)) {
 		return false;
 	}
 
+	// ... then the keyboard
+	if (!process_record_kb(keycode, record)) {
+		return false;
+	}
+
+	// ... then the protocol
+	if (!process_record_proto(keycode, record)) {
+		return false;
+	}
+
+	// ... then the internal handler.
 	switch (KEY_GET_OP(keycode)) {
 		case OP_NONE: {
 			uint8_t mods = KEY_GET_MOD(keycode);

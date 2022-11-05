@@ -110,6 +110,22 @@ bool ko_cancel_tap_hold_event(uint16_t keycode, struct key_record* record) {
 	return found != NULL;
 }
 
+/// ChromeOS EC PS/2 platform hooks
+bool process_record_proto(uint16_t keycode, keyrecord_t* record) {
+	switch (keycode) {
+		case KC_BRND: // Protocol override: this goes out via HID
+			update_hid_key(HID_KEY_DISPLAY_BRIGHTNESS_DN, record->event.pressed);
+			return false;
+		case KC_BRNU: // Protocol override: this goes out via HID
+			update_hid_key(HID_KEY_DISPLAY_BRIGHTNESS_UP, record->event.pressed);
+			return false;
+		case KC_RFKL: // Protocol override: this goes out via HID
+			update_hid_key(HID_KEY_AIRPLANE_MODE, record->event.pressed);
+			return false;
+	}
+	return true;
+}
+
 /// REGION: Platform Hooks
 //////////////////////////////////
 #define EC_CMD_SET_KEYBOARD_OVERDRIVE 0x3E7F

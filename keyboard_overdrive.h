@@ -171,6 +171,10 @@ enum _keycode {
 	KC_PSCR,
 	KC_SLCK,
 
+	KC_BRND,
+	KC_BRNU,
+	KC_RFKL,
+
 	SAFE_AREA,
 
 	KC_LWIN = KC_LGUI,
@@ -305,6 +309,7 @@ typedef struct key_record {
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record);
 bool process_record_kb(uint16_t keycode, keyrecord_t* record);
+bool process_record_proto(uint16_t keycode, keyrecord_t* record);
 bool process_record(uint16_t keycode, keyrecord_t* record);
 
 // Suspend and Resume hooks are called when the computer goes into sleep
