@@ -96,6 +96,9 @@ __attribute__((weak)) bool process_record_kb(uint16_t keycode, keyrecord_t* reco
 __attribute__((weak)) bool process_record_user(uint16_t keycode, keyrecord_t* record) { return true; }
 
 bool process_record(uint16_t keycode, struct key_record* record) {
+	if (!keycode)
+		return false;
+
 	// The user routine gets the highest precedence
 	if (!process_record_user(keycode, record)) {
 		return false;
